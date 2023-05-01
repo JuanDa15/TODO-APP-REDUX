@@ -1,0 +1,20 @@
+<!-- 'editing' 'view' -->
+<li [class.completed]="todo.completed"
+    [class.editing]="editing"
+    (keydown.escape)="closeEditing()">
+  <div class="view">
+    <input
+      class="toggle"
+      type="checkbox"
+      [(ngModel)]="isCompleted"
+      (change)="toogleTodoStatus()"
+    />
+    <label (dblclick)="openEditing(input)">{{ todo.text }}</label>
+    <button class="destroy"
+            (click)="deleteTodo()"></button>
+  </div>
+  <input class="edit"
+        [(ngModel)]="description"
+        (blur)="closeEditing()" #input
+        (keydown.enter)="saveTodo()"/>
+</li>
