@@ -1,5 +1,5 @@
 <!-- 'editing' 'view' -->
-<li [class.completed]="todo.completed"
+<li [class.completed]="isCompleted"
     [class.editing]="editing"
     (keydown.escape)="closeEditing()">
   <div class="view">
@@ -10,11 +10,14 @@
       (change)="toogleTodoStatus()"
     />
     <label (dblclick)="openEditing(input)">{{ todo.text }}</label>
-    <button class="destroy"
-            (click)="deleteTodo()"></button>
+    <button
+      type="button"
+      class="destroy"
+      (click)="deleteTodo()"
+    ></button>
   </div>
   <input class="edit"
         [(ngModel)]="description"
-        (blur)="closeEditing()" #input
-        (keydown.enter)="saveTodo()"/>
+        (blur)="saveTodo();closeEditing()" #input
+        (keydown.enter)="saveTodo(); closeEditing()"/>
 </li>

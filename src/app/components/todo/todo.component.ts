@@ -1,5 +1,8 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/App.state';
 import { Todo } from 'src/app/models/todo.model';
+import { toggleCompleted, update, deleteTodo } from 'src/app/redux/todo.actions';
 
 @Component({
   selector: 'todo',
@@ -8,6 +11,7 @@ import { Todo } from 'src/app/models/todo.model';
   ]
 })
 export class TodoComponent {
+  public store: Store<AppState> = inject(Store)
   public editing = false;
   public isCompleted = false;
   public description = '';
@@ -27,11 +31,16 @@ export class TodoComponent {
   }
 
   toogleTodoStatus() {
-
+    this.store.dispatch(toggleCompleted({
+      id: this.todo.id,
+      status: this.isCompleted
+    }))
   }
 
   deleteTodo() {
-
+    this.store.dispatch(deleteTodo({
+      id: this.todo.id
+    }))
   }
 
   closeEditing() {
@@ -39,6 +48,18 @@ export class TodoComponent {
   }
 
   saveTodo() {
-    console.log(this.description);
+    if (this.description.length === 0) {
+      this.description = this.todo.text;
+      return;
+    }
+
+    if (this.description === this.todo.text) {
+      return;
+    }
+
+    this.store.dispatch(update({
+      id: this.todo.id,
+      text: this.description
+    }))
   }
 }

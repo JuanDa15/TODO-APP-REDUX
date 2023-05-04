@@ -1,20 +1,22 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './App.state';
-import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  public store: Store<AppState> = inject(Store);
-  public todosObs$ = this.store.select('todos');
-  title = 'todo-app-redux';
-
-  get todosQuantity$() {
-    return this.todosObs$.pipe(map(val => val.length || 0))
+export class AppComponent implements OnInit{
+  public store: Store<AppState> = inject(Store)
+  public router = inject(Router)
+  ngOnInit(): void {
+    this.store.select((state) => state.filters).subscribe({
+      next: (val) => {
+        this.router.navigateByUrl('/'+val)
+      }
+    })
   }
 
 }

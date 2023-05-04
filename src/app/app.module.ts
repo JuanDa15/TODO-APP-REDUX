@@ -8,9 +8,12 @@ import { TodoComponent } from './components/todo/todo.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { TodoHeaderComponent } from './components/todo-header/todo-header.component';
 import { StoreModule } from '@ngrx/store';
-import { TodoReducer } from './redux/todo.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormsModule } from '@angular/forms';
+
+import { appReducers } from './App.state';
+import { TodoPageComponent } from './pages/todo-page/todo-page.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,15 @@ import { FormsModule } from '@angular/forms';
     TodoFooterComponent,
     TodoComponent,
     TodoListComponent,
-    TodoHeaderComponent
+    TodoHeaderComponent,
+    TodoPageComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({todos: TodoReducer}),
+    StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode()
